@@ -1,3 +1,4 @@
+foo:bar;
 |G G G G|G G G G|
 [
 	|F G G G|G|
