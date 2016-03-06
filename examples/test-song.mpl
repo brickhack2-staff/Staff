@@ -1,6 +1,6 @@
 A:B;
 C:D;
-|A A B A|
+|A ^A _B ^^_A|
 [
-  |A B A B|
+  |A' B, A'' ^B,',|
 ]
