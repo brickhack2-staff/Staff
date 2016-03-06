@@ -63,13 +63,16 @@
   "Parses the source code into a hash-map.
 
   Inputs:
-      source-code: String
+      source-file: String
 
   Outputs:
       {:header header,
        :body body}"
-  [source-code]
-  (let [[header body] (split-header-body source-code)
+  [source-file]
+  
+  let [input (new ANTLRFileStream source-file)]
+
+  #_(let [[header body] (split-header-body source-code)
         header (parse-header header)
         body (parse-body body)]
     {:header header,
