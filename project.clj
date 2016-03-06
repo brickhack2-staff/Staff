@@ -6,6 +6,7 @@
   :dependencies [[org.clojure/clojure      "1.8.0"]
                  [org.clojure/tools.cli    "0.3.1"]
                  [jfugue                   "4.0.3"]
+                 [jline                    "0.9.94"]
                  [org.antlr/antlr4         "4.5.2-1"]
                  [org.antlr/antlr4-runtime "4.5.2-1"]]
   :plugins [[lein-antlr4 "0.1.0-SNAPSHOT"]]

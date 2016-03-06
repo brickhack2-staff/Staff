@@ -1,5 +1,6 @@
 (ns mpl.util
-  "Miscellaneous utility functions.")
+  "Miscellaneous utility functions."
+  (:import jline.Terminal))
 
 
 (defn camel->lisp
@@ -8,3 +9,8 @@
   (-> s
       (clojure.string/replace #"([a-z])([A-Z])" "$1-$2")
       clojure.string/lower-case))
+
+(defn read-char
+  []
+  (.getCharacter (Terminal/getTerminal)
+                 System/in))

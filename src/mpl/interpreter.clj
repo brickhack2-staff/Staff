@@ -1,45 +1,48 @@
-(ns mpl.core
-  (:require [mpl.ast :as ast]
-            [clojure.java.io :as io])
+(ns mpl.interpreter
+  (:require [mpl.util :as util]
+            [clojure.java.io :as io]
+            [clojure.pprint :refer [pprint]])
   (:import jline.Terminal)
-  (:gen-class)
-  )
+  (:gen-class))
+
+
+(defn modify-tape
+  [tape f]
+  (let [{:keys [array point]} tape
+        old-val (aget array point)
+        new-val (f old-val)]
+    (aset array point new-val)
+    tape))
+
+
+(defn move-tape
+  [tape dx]
+  (update tape :point
+          #(mod (+ % dx) (:length tape))))
+
+(def cmd-map
+  {\+ #(modify-tape % inc)
+   \- #(modify-tape % dec)
+   \> #(move-tape   % +1)
+   \< #(move-tape   % -1)
+   \. #(modify-tape % (constantly util/read-char))
+   \, (fn [tape]
+        (print (-> tape :array :point))
+        (flush)
+        tape)})
+
+(defn empty-tape
+  ([]
+   (empty-tape 40))
+  ([size]
+   {:array  (int-array size),
+    :point  0,
+    :length size}))
+
+(defn run-cmd
+  [cmd tape]
+  (-> cmd-map cmd tape))
 
 (defn interpret
   [cmd-list]
-  ()
-)
-
-(defn run-cmd
-  [cmd, tape]
-  (case cmd
-    '+' (modify-tape tape (partial + 1))
-    '-' (modify-tape tape #(% - 1))
-    '>' (move-tape tape 1)
-    '<' (move-tape tape -1)
-    '.  (modify-tape (constantly (.getCharacter Terminal/getTerminal System/in)))
-    ',' (println ((:array tape) :point))
-    )
-  )
-
-(defn modify-tape
-  [tape, f]
-  (aset (:array tape) (:point tape) (f (aget (:array tape) (:point type))))
-  )
-
-(defn move-tape
-  [tape, dx]
-  (update tape :point #(mod (+ % dx) (:length tape)))
-  )
-
-(defn empty-tape
-  []
-  {:array (make-array Integer/TYPE 40)
-   :point 0
-   :length 40
-  }
-  [size]
-  {:array (make-array Integer/TYPE size)
-   :point 0
-   :length size
-  })
+  (pprint cmd-list))
