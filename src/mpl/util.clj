@@ -12,5 +12,5 @@
 
 (defn read-char
   []
-  (.getCharacter (Terminal/getTerminal)
-                 System/in))
+  (.readCharacter (Terminal/getTerminal)
+                  System/in))

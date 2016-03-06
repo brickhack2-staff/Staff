@@ -18,7 +18,6 @@
 
 (defn move-tape
   [tape dx]
-  (println "LENGTH" (:length tape))
   (update tape :point
           #(mod (+ % dx) (:length tape))))
 
@@ -27,9 +26,10 @@
    :dec   #(modify-tape % dec)
    :right #(move-tape   % +1)
    :left  #(move-tape   % -1)
-   :comma #(modify-tape % (constantly util/read-char))
+   :comma #(modify-tape % (fn [& _] (util/read-char)))
    :dot   (fn [tape]
-            (print (-> tape :array :point))
+            (print (char (aget (:array tape)
+                               (:point tape))))
             (flush)
             tape)})
    :noop  identity
@@ -54,13 +54,8 @@
     :point  0,
     :length size}))
 
-(defn run-cmd
-  [cmd tape]
-  (-> cmd-map cmd tape))
-
 (defn interpret-exprs [node tape]
   (reduce (fn [tape node]
-            (println tape)
             (interpret node tape))
           tape
           (:exprs node)))
@@ -79,5 +74,5 @@
       (recur node tape))))
 
 (defmethod interpret :note [node tape]
-  (pprint node)
-  tape)
+  ((-> node :tone tone-map cmd-map)
+   tape))
