@@ -31,12 +31,12 @@ body
     ;
 
 expr
-    : notes //measure
+    : measure 
     | repeat
     ;
 
 measure
-    : '|' notes '|'?
+    : notes //'|' notes '|'?
     ;
 
 notes

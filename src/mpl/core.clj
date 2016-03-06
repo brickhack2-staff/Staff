@@ -39,4 +39,4 @@ c:d
     ;; Exit if syntax errors occured.
     (when (pos? errors)
       (exit 1 (errors-occured errors)))
-    (pprint (ast/ast ast))))
+    (pprint (ast/cmd-list (ast/ast ast)))))

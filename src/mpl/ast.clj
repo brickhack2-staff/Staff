@@ -89,7 +89,8 @@
               ;; get the node's children
               children
               ;; take only the 2nd child (it's the vector of notes)
-              second
+              first ;;second
+              ;; first instead of second once we remove bars
               ;; turn into an ast
               ast)})
 
@@ -140,3 +141,9 @@
 
 (defmethod ast :down-octave [node]
   -1)
+
+
+(defn cmd-list
+  [tree]
+  (tree :body)
+  )
