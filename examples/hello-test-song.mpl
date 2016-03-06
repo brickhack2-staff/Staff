@@ -1,23 +1,31 @@
-|A A A A|A A A A|
+|G G G G|G G G G|
 [
-	|F A A A|A|
+	|F G G G|G|
 	[ 
-		|F A A F|
-		|A A A F|
-		|A A A F|
-		|A E E E|
-		|E G| 
+		|F G G F|
+		|G G G F|
+		|G G G F|
+		|G D D D|
+		|D E| 
 	]
-	|F A F A|
-	|F G F F|A|
-	[ E ]
-	|E G|
+	|F G F G|
+	|F E F F|G|
+	[ D ]
+	|D E|
 ]
-|F F C|F G G G|
-|C A A A|A A A A|
-|C C A A|A C F F|
-|C E G C|E C A A|
-|A C G G|G G G G|
+|F F C|F E E E|
 |C G G G|G G G G|
-|G C F F|A C F A|
-|A C|
+|C C G G|G C F F|
+|C D E C|D C G G|
+|G C E E|E E E E|
+|C E E E|E E E E|
+|E C F F|G C F G|
+|G C|
+
+
+//+ = G
+//- = E
+//< = F
+//> = D
+//. = C
+// 
