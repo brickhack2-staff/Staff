@@ -19,11 +19,11 @@ attribute
     ;
 
 attrKey
-    : ID
+    : ID | TONE
     ;
 
 attrVal
-    : ID
+    : ID | TONE
     ;
 
 body
@@ -31,7 +31,7 @@ body
     ;
 
 expr
-    : measure
+    : notes //measure
     | repeat
     ;
 
@@ -44,14 +44,8 @@ notes
     ;
 
 note
-    : accidentals ID octaves
+    : accidentals TONE octaves
     ;
-
-/*
-TONE
-    : [a-gA-G]
-    ;
-*/
 
 repeat
     : '[' expr* ']'
@@ -79,12 +73,8 @@ octave
     # upOctave
     ;
 
-ID
-    :   [a-zA-Z][0-9a-zA-Z]*
-    ;
-
 WS
-    :   [ \r\t\n]+ -> skip
+    :   [ \r\t\n|]+ -> skip
     ;
 
 COMMENT
@@ -94,3 +84,13 @@ COMMENT
 LINE_COMMENT
     : '//' ~[\r\n]* -> skip
     ;
+
+
+TONE
+    : [a-gA-G]
+    ;
+
+ID
+    :   TONE | [a-zA-Z]([0-9a-zA-Z])+ | [h-zH-Z]
+    ;
+
