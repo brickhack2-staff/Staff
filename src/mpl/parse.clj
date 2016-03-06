@@ -1,7 +1,11 @@
 (ns mpl.parse
   "Collection of functions which parse source code."
   (:require [clojure.string :as str]
-            [clojure.java.io :as io]))
+            [clojure.java.io :as io])
+  (:import [mpl.antlr
+            MPLLexer MPLParser]
+           [org.antlr.v4.runtime
+            ANTLRFileStream CommonTokenStream]))
 
 (defn split-header-body
   "Splits the header and body in the given source code. The separation is
@@ -69,9 +73,16 @@
       {:header header,
        :body body}"
   [source-file]
-  
-  (let [input (new ANTLRFileStream source-file)])
-  
+
+  (let [input  (new ANTLRFileStream   source-file)
+        lexer  (new MPLLexer          input)
+        tokens (new CommonTokenStream lexer)
+        parser (new MPLParser tokens)
+
+        tree   (.goal parser)
+        errors (.getNumberOfSyntaxErrors parser)]
+    [tree parser errors])
+
 
   #_(let [[header body] (split-header-body source-code)
         header (parse-header header)

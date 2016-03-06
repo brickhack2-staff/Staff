@@ -11,7 +11,7 @@ goal
     ;
 
 header
-    : attribute* 
+    : attribute*
     ;
 
 attribute
@@ -44,7 +44,7 @@ notes
     ;
 
 note
-    : ('#'|'_')* TONE'\''*
+    : ('#'|'_')* TONE '\''*
     ;
 
 TONE
