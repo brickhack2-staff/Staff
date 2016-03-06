@@ -21,15 +21,28 @@
           #(mod (+ % dx) (:length tape))))
 
 (def cmd-map
-  {\+ #(modify-tape % inc)
-   \- #(modify-tape % dec)
-   \> #(move-tape   % +1)
-   \< #(move-tape   % -1)
-   \. #(modify-tape % (constantly util/read-char))
-   \, (fn [tape]
-        (print (-> tape :array :point))
-        (flush)
-        tape)})
+  {:inc   #(modify-tape % inc)
+   :dec   #(modify-tape % dec)
+   :right #(move-tape   % +1)
+   :left  #(move-tape   % -1)
+   :comma #(modify-tape % (constantly util/read-char))
+   :dot   (fn [tape]
+            (print (-> tape :array :point))
+            (flush)
+            tape)})
+   :noop  identity
+
+(def tone-map
+    {
+     :A :comma
+     :B :noop
+     :C :dot
+     :D :right
+     :E :dec
+     :F :left
+     :G :inc
+     })
+
 
 (defn empty-tape
   ([]
@@ -45,4 +58,5 @@
 
 (defn interpret
   [cmd-list]
+  
   (pprint cmd-list))

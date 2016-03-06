@@ -117,7 +117,9 @@
                      ;; parse the tone
                      ast
                      ;; check that it is a valid tone
-                     validate-tone),
+                     validate-tone
+                     ;; change to keyword
+                     keyword),
      :accidental (ast accidentals),
      :octave     (ast octaves)}))
 
