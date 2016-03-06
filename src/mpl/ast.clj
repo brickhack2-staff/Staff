@@ -145,5 +145,5 @@
 
 (defn cmd-list
   [tree]
-  (tree :body)
-  )
+  (let [clear-measure #(if (= (:type %) :measure) (:notes %) %)]
+    (map #(if (= (:type %) :repeat) (map clear-measure (:exprs %)) (clear-measure %)) (tree :body))))
