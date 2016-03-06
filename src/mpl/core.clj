@@ -3,6 +3,7 @@
             [mpl.interpreter :as interpreter]
             [mpl.parse :as parse]
             [clojure.pprint :refer [pprint]])
+  (:import [org.jfugue Player Tempo])
   (:gen-class))
 
 ; Placeholder for actual reading of source code from file.
@@ -37,11 +38,23 @@ c:d
 (defn -main
   [source-file & args]
   (let [[ast parser errors] (parse/parse-source source-file)
+        ;; Exit if syntax errors occured.
+        _ (when (pos? errors)
+            (exit 1 (errors-occured errors)))
         ;; make ast nicer
-        ast (ast/ast ast)]
-    ;; Exit if syntax errors occured.
-    (when (pos? errors)
-      (exit 1 (errors-occured errors)))
+        ast (ast/ast ast)
+        ;; parse tempo
+        tempo (-> ast
+                  :meta
+                  :tempo)
+        tempo (if tempo
+                (Integer/parseInt tempo)
+                220)
+        tempo (new Tempo tempo)
+        ;; init player
+        player (new Player)]
     ;; Run program.
     (interpreter/interpret (:body ast)
-                           (interpreter/empty-tape))))
+                           (interpreter/empty-tape)
+                           player
+                           tempo)))

@@ -2,12 +2,12 @@
   (:require [mpl.util :as util]
             [clojure.java.io :as io]
             [clojure.pprint :refer [pprint]])
-  (:import jline.Terminal org.jfugue.Player)
+  (:import [org.jfugue Note Pattern])
+
   (:gen-class))
 
 (declare interpret)
 
-(def player (new Player))
 
 (defn modify-tape
   [tape f]
@@ -56,26 +56,33 @@
     :point  0,
     :length size}))
 
-(defn interpret-exprs [node tape]
+(defn interpret-exprs [node tape player tempo]
   (reduce (fn [tape node]
-            (interpret node tape))
+            (interpret node tape player tempo))
           tape
           (:exprs node)))
 
-(defmulti interpret (fn [node tape]
+(defmulti interpret (fn [node tape player tempo]
                       (:type node)))
 
-(defmethod interpret :root [node tape]
-  (interpret-exprs node tape))
+(defmethod interpret :root [node tape player tempo]
+  (interpret-exprs node tape player tempo))
 
-(defmethod interpret :repeat [node tape]
-  (let [tape (interpret-exprs node tape)
+(defmethod interpret :repeat [node tape player tempo]
+  (let [tape (interpret-exprs node tape player tempo)
         {:keys [array point]} tape]
     (if (zero? (aget array point))
       tape
-      (recur node tape))))
+      (recur node tape player tempo))))
 
-(defmethod interpret :note [node tape]
-  (.play player (-> node :tone name))
-  ((-> node :tone tone-map cmd-map)
-   tape))
+(defmethod interpret :note [node tape player tempo]
+  (let [;; create note object
+        note    (-> node :tone name)
+;        note    (new Note note)
+        ;; create pattern to play note at tempo
+        pattern (doto (new Pattern)
+                  (.addElement tempo)
+                  (.add note))]
+    (.play player pattern)
+    ((-> node :tone tone-map cmd-map)
+     tape)))

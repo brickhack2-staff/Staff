@@ -72,7 +72,7 @@
      (ast val)]))
 
 (defmethod ast :attr-key [node]
-  (ast (.getChild node 0)))
+  (keyword (ast (.getChild node 0))))
 
 (defmethod ast :attr-val [node]
   (ast (.getChild node 0)))
