@@ -1,5 +1,6 @@
 (ns mpl.core
-  (:require [mpl.parse :as parse]
+  (:require [mpl.ast :as ast]
+            [mpl.parse :as parse]
             [clojure.pprint :refer [pprint]])
   (:gen-class))
 
@@ -38,4 +39,4 @@ c:d
     ;; Exit if syntax errors occured.
     (when (pos? errors)
       (exit 1 (errors-occured errors)))
-    (println ast)))
+    (pprint (ast/ast ast))))
