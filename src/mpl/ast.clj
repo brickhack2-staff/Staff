@@ -78,7 +78,8 @@
   (ast (.getChild node 0)))
 
 (defmethod ast :body [node]
-  (ast (.getChild node 0)))
+  {:type :root
+   :exprs (ast (.getChild node 0))})
 
 (defmethod ast :expr [node]
   (->> node
@@ -130,15 +131,3 @@
 
 (defmethod ast :down-octave [node]
   -1)
-
-
-(defn cmd-list
-  [tree]
-  (let [clear-measure #(if (= (:type %) :measure)
-                         (:notes %)
-                         %)]
-    (map #(if (= (:type %) :repeat)
-            (map clear-measure
-                 (:exprs %))
-            (clear-measure %))
-         (tree :body))))

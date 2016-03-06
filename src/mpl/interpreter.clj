@@ -5,6 +5,7 @@
   (:import jline.Terminal)
   (:gen-class))
 
+(declare interpret)
 
 (defn modify-tape
   [tape f]
@@ -17,6 +18,7 @@
 
 (defn move-tape
   [tape dx]
+  (println "LENGTH" (:length tape))
   (update tape :point
           #(mod (+ % dx) (:length tape))))
 
@@ -56,7 +58,26 @@
   [cmd tape]
   (-> cmd-map cmd tape))
 
-(defn interpret
-  [cmd-list]
-  
-  (pprint cmd-list))
+(defn interpret-exprs [node tape]
+  (reduce (fn [tape node]
+            (println tape)
+            (interpret node tape))
+          tape
+          (:exprs node)))
+
+(defmulti interpret (fn [node tape]
+                      (:type node)))
+
+(defmethod interpret :root [node tape]
+  (interpret-exprs node tape))
+
+(defmethod interpret :repeat [node tape]
+  (let [tape (interpret-exprs node tape)
+        {:keys [array point]} tape]
+    (if (zero? (aget array point))
+      tape
+      (recur node tape))))
+
+(defmethod interpret :note [node tape]
+  (pprint node)
+  tape)
