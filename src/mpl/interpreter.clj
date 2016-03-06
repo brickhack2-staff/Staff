@@ -7,6 +7,8 @@
 
 (declare interpret)
 
+(def player (new Player))
+
 (defn modify-tape
   [tape f]
   (let [{:keys [array point]} tape
@@ -74,6 +76,6 @@
       (recur node tape))))
 
 (defmethod interpret :note [node tape]
-  #_(.play (new Player) "C")
+  (.play player (-> node :tone name))
   ((-> node :tone tone-map cmd-map)
    tape))
