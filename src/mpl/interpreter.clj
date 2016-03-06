@@ -2,7 +2,7 @@
   (:require [mpl.util :as util]
             [clojure.java.io :as io]
             [clojure.pprint :refer [pprint]])
-  (:import jline.Terminal)
+  (:import jline.Terminal org.jfugue.Player)
   (:gen-class))
 
 (declare interpret)
@@ -74,5 +74,6 @@
       (recur node tape))))
 
 (defmethod interpret :note [node tape]
+  #_(.play (new Player) "C")
   ((-> node :tone tone-map cmd-map)
    tape))
