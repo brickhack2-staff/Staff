@@ -11,7 +11,7 @@ goal
     ;
 
 header
-    : (attribute [\r\n])*
+    : attribute* 
     ;
 
 attribute
@@ -19,11 +19,11 @@ attribute
     ;
 
 attrKey
-    : [a-zA-Z_][0-9a-zA-Z_]*
+    : ID
     ;
 
 attrVal
-    : ~[;]*
+    : ~(';')*
     ;
 
 body
@@ -40,19 +40,15 @@ measure
     ;
 
 notes
-    : noteGroup*
-    ;
-
-noteGroup
-    : note*
+    : note+
     ;
 
 note
-    : [#_]*tone'*
+    : ('#'|'_')* TONE'\''*
     ;
 
-tone
-    : [a-hA-H]
+TONE
+    : [a-gA-G]
     ;
 
 repeat
@@ -60,5 +56,10 @@ repeat
     ;
 
 WS
-    :   [ \r\t\n]* -> skip
+    :   [ \r\t\n]+ -> skip
     ;
+
+ID
+    : [a-zA-Z_][0-9a-zA-Z_]*
+    ;
+

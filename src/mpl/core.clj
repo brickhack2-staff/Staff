@@ -11,6 +11,6 @@ c:d
 
 
 (defn -main
-  [& args]
+  [source-name & args]
   ; Parse the sample source code into internal representation and print.
-  (pprint (parse/parse-source source)))
+  (pprint (parse/parse-source source-name)))

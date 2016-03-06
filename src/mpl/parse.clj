@@ -70,10 +70,12 @@
        :body body}"
   [source-file]
   
-  let [input (new ANTLRFileStream source-file)]
+  (let [input (new ANTLRFileStream source-file)])
+  
 
   #_(let [[header body] (split-header-body source-code)
         header (parse-header header)
         body (parse-body body)]
     {:header header,
-     :body body}))
+     :body body})
+  )
