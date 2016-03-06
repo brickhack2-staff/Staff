@@ -39,9 +39,10 @@ c:d
   (let [[ast parser errors] (parse/parse-source source-file)
         ;; make ast nicer
         ast (ast/ast ast)
-        cmd-list (ast/cmd-list ast)]
+;        cmd-list (ast/cmd-list ast)
+        ]
     ;; Exit if syntax errors occured.
     (when (pos? errors)
       (exit 1 (errors-occured errors)))
     ;; Run program.
-    (interpreter/interpret cmd-list)))
+    (interpreter/interpret ast)))

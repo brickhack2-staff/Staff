@@ -27,20 +27,11 @@ attrVal
     ;
 
 body
-    : expr*
+    : expr
     ;
 
 expr
-    : measure 
-    | repeat
-    ;
-
-measure
-    : notes //'|' notes '|'?
-    ;
-
-notes
-    : note+
+    : ( note | repeat )+
     ;
 
 note
@@ -48,7 +39,7 @@ note
     ;
 
 repeat
-    : '[' expr* ']'
+    : '[' expr ']'
     ;
 
 accidentals

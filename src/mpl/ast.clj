@@ -78,21 +78,12 @@
   (ast (.getChild node 0)))
 
 (defmethod ast :body [node]
-  (map ast (children node)))
-
-(defmethod ast :expr [node]
   (ast (.getChild node 0)))
 
-(defmethod ast :measure [node]
-  {:type :measure
-   :notes (-> node
-              ;; get the node's children
-              children
-              ;; take only the 2nd child (it's the vector of notes)
-              first ;;second
-              ;; first instead of second once we remove bars
-              ;; turn into an ast
-              ast)})
+(defmethod ast :expr [node]
+  (->> node
+       children
+       (map ast)))
 
 (defmethod ast :repeat [node]
   {:type :repeat
@@ -102,18 +93,14 @@
                ;; drop the first and last children (they're braces)
                rest butlast
                ;; turn into an ast
-               (map ast))})
-
-(defmethod ast :notes [node]
-  (->> node
-       ;; take the node's children
-       children
-       ;; build their ast's
-       (map ast)))
+               (map ast)
+               ;; dirty hax
+               first)})
 
 (defmethod ast :note [node]
   (let [[accidentals tone octaves] (children node)]
-    {:tone       (-> tone
+    {:type       :note
+     :tone       (-> tone
                      ;; parse the tone
                      ast
                      ;; check that it is a valid tone
@@ -147,5 +134,11 @@
 
 (defn cmd-list
   [tree]
-  (let [clear-measure #(if (= (:type %) :measure) (:notes %) %)]
-    (map #(if (= (:type %) :repeat) (map clear-measure (:exprs %)) (clear-measure %)) (tree :body))))
+  (let [clear-measure #(if (= (:type %) :measure)
+                         (:notes %)
+                         %)]
+    (map #(if (= (:type %) :repeat)
+            (map clear-measure
+                 (:exprs %))
+            (clear-measure %))
+         (tree :body))))
