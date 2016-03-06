@@ -5,6 +5,6 @@
             :url "http://opensource.org/licenses/MIT"}
   :dependencies [[org.clojure/clojure      "1.8.0"]
                  [org.clojure/tools.cli    "0.3.1"]
-;                 [jfugue                   "4.0.3"]
+                 [jfugue                   "4.0.3"]
                  ]
   :main mpl.core)
